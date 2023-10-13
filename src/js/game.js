@@ -33,7 +33,7 @@ const createKeyboard = () => {
 // createHangmanImg
 const createHangmanImg = () => {
   const image = document.createElement('img');
-  image.src = '/images/hg-0.png';
+  image.src = 'images/hg-0.png';
   image.alt = 'Hangman image';
   image.classList.add('hangman-img');
   image.id = 'hangman-img';
@@ -52,7 +52,7 @@ const checkLetter = (letter) => {
     triesCounter.innerText = triesLeft;
 
     const hangmanImg = document.getElementById('hangman-img');
-    hangmanImg.src = `/images/hg-${10 - triesLeft}.png`;
+    hangmanImg.src = `images/hg-${10 - triesLeft}.png`;
 
     if (triesLeft === 0) {
       stopGame('lose');
@@ -82,7 +82,7 @@ export const stopGame = (status) => {
   const word = sessionStorage.getItem('word');
 
   if (status === 'win') {
-    document.getElementById('hangman-img').src = '/images/hg-win.png';
+    document.getElementById('hangman-img').src = 'images/hg-win.png';
     document.getElementById('game').innerHTML += '<h2 class="result-header win">You won!</h2>';
   } else if (status === 'lose') {
     document.getElementById('game').innerHTML += '<h2 class="result-header lose">You lost :(</h2>';
