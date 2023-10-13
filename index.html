@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hangman Game</title>
+
+    <link rel="preload" href="images/hg-0.png" as="image">
+    <link rel="preload" href="images/hg-1.png" as="image">
+    <link rel="preload" href="images/hg-2.png" as="image">
+    <link rel="preload" href="images/hg-3.png" as="image">
+    <link rel="preload" href="images/hg-4.png" as="image">
+    <link rel="preload" href="images/hg-5.png" as="image">
+    <link rel="preload" href="images/hg-6.png" as="image">
+    <link rel="preload" href="images/hg-7.png" as="image">
+    <link rel="preload" href="images/hg-8.png" as="image">
+    <link rel="preload" href="images/hg-9.png" as="image">
+    <link rel="preload" href="images/hg-10.png" as="image">
+    <link rel="preload" href="images/hg-win.png" as="image">
+  </head>
+  <body>
+    <div id="app" class="app">
+      <div class="absolute top-6 right-6">
+        <label class="relative inline-flex items-center mr-5 cursor-pointer">
+          <input id="toggleDarkMode" type="checkbox" class="sr-only peer" checked>
+          <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-blue-500  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-blue-600 peer-checked:bg-blue-500 toggle"></div>
+        </label>
+      </div>
+      <h1 id="logo" class="logo">HANGMAN GAME</h1>
+      <div id="game" class="mt-10 flex flex-col items-center">
+        <button class="button-primary" id="startGame" type="button">Start game</button>
+      </div>
+    </div>
+    <script type="module" src="./src/js/main.js"></script>
+  </body>
+</html>
