@@ -1,4 +1,5 @@
 import { WORDS, KEYBOARD_LETTERS } from './consts';
+import { wordGenerator } from './wordGenerator';
 
 const gameDiv = document.getElementById('game');
 const logo = document.getElementById('logo');
@@ -6,9 +7,7 @@ let triesLeft;
 let winCount;
 
 // createPlaceholdersHTML
-const createPlaceholdersHTML = () => {
-  const word = sessionStorage.getItem('word');
-
+const createPlaceholdersHTML = (word) => {
   const wordArray = Array.from(word);
   const placeholdersHTML = wordArray.reduce((acc, curr, i) => acc + `<h1 id="letter_${i}" class="letter">_</h1>`, '');
 
@@ -42,8 +41,7 @@ const createHangmanImg = () => {
 };
 
 // checkLetter
-const checkLetter = (letter) => {
-  const word = sessionStorage.getItem('word');
+const checkLetter = (letter, word) => {
   const inputLetter = letter.toLowerCase();
 
   if (!word.includes(inputLetter)) {
@@ -55,7 +53,7 @@ const checkLetter = (letter) => {
     hangmanImg.src = `images/hg-${10 - triesLeft}.png`;
 
     if (triesLeft === 0) {
-      stopGame('lose');
+      stopGame('lose', word);
     }
   } else {
     const wordArray = Array.from(word);
@@ -63,7 +61,7 @@ const checkLetter = (letter) => {
       if (currentLetter === inputLetter) {
         winCount += 1;
         if (winCount === word.length) {
-          stopGame('win');
+          stopGame('win', word);
           return;
         }
         document.getElementById(`letter_${i}`).innerText = inputLetter.toUpperCase();
@@ -73,13 +71,11 @@ const checkLetter = (letter) => {
 };
 
 // stopGame
-export const stopGame = (status) => {
+export const stopGame = (status, word) => {
   document.getElementById('placeholders').remove();
   document.getElementById('tries').remove();
   document.getElementById('keyboard').remove();
   document.getElementById('quit').remove();
-
-  const word = sessionStorage.getItem('word');
 
   if (status === 'win') {
     document.getElementById('hangman-img').src = 'images/hg-win.png';
@@ -93,21 +89,12 @@ export const stopGame = (status) => {
 
   document.getElementById('game').innerHTML += `<p>The word was: <span class="result-word">${word}</span></p><button id="play-again" class="button-primary px-5 py-2 mt-4">Play again</button>`;
 
-  document.getElementById('play-again').onclick = startGame;
+  document.getElementById('play-again').addEventListener('click', startGame);
 };
 
-// startGame
-export const startGame = () => {
-  triesLeft = 10;
-  winCount = 0;
-
-  logo.classList.add('logo-sm');
-  const randomIndex = Math.floor(Math.random() * WORDS.length);
-  const wordToGuess = WORDS[randomIndex];
-
-  sessionStorage.setItem('word', wordToGuess);
-
-  gameDiv.innerHTML = createPlaceholdersHTML();
+// createPlayArea
+const createPlayArea = (word) => {
+  gameDiv.innerHTML = createPlaceholdersHTML(word);
   const keyboardDiv = createKeyboard();
 
   gameDiv.innerHTML += `<p id="tries" class="mt-2">TRIES LEFT: <span id="tries-left" class="font-medium text-red-600">${triesLeft}</span></p>`;
@@ -117,7 +104,7 @@ export const startGame = () => {
   keyboardDiv.addEventListener('click', (event) => {
     if (event.target.tagName.toLowerCase() === 'button') {
       event.target.disabled = true;
-      checkLetter(event.target.id);
+      checkLetter(event.target.id, word);
     }
   });
 
@@ -129,7 +116,40 @@ export const startGame = () => {
   document.getElementById('quit').onclick = () => {
     const isSure = confirm('Are you sure you want to exit?');
     if (isSure) {
-      stopGame('quit');
+      stopGame('quit', word);
     }
   };
+};
+
+// generateWord
+const generateWord = (controller) => {
+  wordGenerator(controller)
+    .then((choices) => {
+      if (choices && choices.length > 0) {
+        const word = choices[0].message.content.toLowerCase().replace(/\./g, ' ');
+        createPlayArea(word);
+      } else {
+        const randomIndex = Math.floor(Math.random() * WORDS.length);
+        const wordToGuess = WORDS[randomIndex];
+        createPlayArea(wordToGuess);
+      }
+    });
+};
+
+// startGame
+export const startGame = () => {
+  triesLeft = 10;
+  winCount = 0;
+
+  logo.classList.add('logo-sm');
+
+  gameDiv.innerHTML = '<div id="loader" class="loader" role="status"></div><p class="mt-3">ChatGPT generates a word for you</p>';
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+    clearTimeout(timeoutId);
+  }, 3000);
+
+  generateWord(controller);
 };
