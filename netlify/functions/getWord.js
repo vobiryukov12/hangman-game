@@ -1,6 +1,4 @@
 import * as dotenv from 'dotenv';
-import fetch from 'node-fetch';
-
 dotenv.config();
 
 exports.handler = async (event, context) => {
@@ -15,7 +13,7 @@ exports.handler = async (event, context) => {
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: 'Generate one word' }]
+          messages: [{ role: 'user', content: 'Write one noun word' }]
         })
       }
     );
