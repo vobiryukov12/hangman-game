@@ -5,7 +5,7 @@ https://vobiryukov12-hangman-game.netlify.app/
 
 ## Preview
 
-<img src='./public/images/hangman-game.gif' width='350'>
+<img src='./public/images/hangman-game.gif' width='450'>
 
 ## Описание
 Hangman - это интерактивная версия классической игры, где игроку нужно угадать слово, имея только ограниченное количество попыток. Каждое слово в игре генерируется с использованием API ChatGPT.
