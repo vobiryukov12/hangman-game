@@ -1,15 +1,6 @@
 export const wordGenerator = (controller) => {
-  return fetch('https://api.openai.com/v1/chat/completions', {
-    signal: controller.signal,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${import.meta.env.VITE_APP_API_KEY}`
-    },
-    body: JSON.stringify({
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: 'Generate one word' }]
-    })
+  return fetch('/.netlify/functions/getWord', {
+    signal: controller.signal
   })
     .then((response) => response.json())
     .then((data) => data.choices)
