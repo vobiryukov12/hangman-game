@@ -13,7 +13,7 @@ exports.handler = async (event, context) => {
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: 'Write one noun word' }]
+          messages: [{ role: 'user', content: 'Give me a random word no more than 10 letters in the singular' }]
         })
       }
     );
